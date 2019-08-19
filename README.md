@@ -6,7 +6,6 @@ Xatkit Core Platform
 
 Toolbox of generic actions that can be used in Xatkit execution models. This platform is bundled with the [Xatkit release](https://github.com/xatkit-bot-platform/xatkit-releases/releases).
 
-
 ## Providers
 
 The core platform does not define any provider.
@@ -19,3 +18,6 @@ The core platform does not define any provider.
 | GetDate | -          | The current date (format: `dd/mm/yyyy`) | String      | Returns the current date formatted as a String. |
 | Random | - `bound` (**Integer**): the bound of the number to generate (exclusive) | A random Integer between `0` (inclusive) and `bound` (exclusive) | Integer | Returns a random number each time it is called |
 
+## Options
+
+The core platform does not support any configuration option.
