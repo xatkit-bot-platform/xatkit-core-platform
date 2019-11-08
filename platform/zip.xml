@@ -9,9 +9,6 @@
     </formats>
     <files>
         <file>
-            <source>CorePlatform.xmi</source>
-        </file>
-        <file>
             <source>CorePlatform.platform</source>
         </file>
     </files>
