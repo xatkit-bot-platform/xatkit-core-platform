@@ -17,7 +17,6 @@ The core platform does not define any provider.
 | ------- | ---------- | --------------------------------------- | ----------- | ----------------------------------------------- |
 | GetTime | -          | The current time (format: `hh:mm:ss`)   | String      | Returns the current time formatted as a String. |
 | GetDate | -          | The current date (format: `dd/mm/yyyy`) | String      | Returns the current date formatted as a String. |
-| Random | - `bound` (**Integer**): the bound of the number to generate (exclusive) | A random Integer between `0` (inclusive) and `bound` (exclusive) | Integer | Returns a random number each time it is called |
 
 ## Options
 

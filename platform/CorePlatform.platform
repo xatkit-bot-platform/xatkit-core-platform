@@ -5,5 +5,4 @@ path "com.xatkit.plugins.core.platform.CorePlatform"
 actions {
 	GetTime : String
 	GetDate : String
-	Random(bound) : Integer
 }

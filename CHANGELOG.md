@@ -8,6 +8,10 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## Unreleased
 
+### Deleted
+
+- Removed `Random` action, this action is not needed anymore with the Xbase integration, and can be replaced by `Math.random` in the execution model. **This change breaks the public API**: existing execution models relying on `CorePlatform.Random` should update to the new java-based syntax.
+
 ## [2.0.1] - 2019-10-10
 
 ### Changed
