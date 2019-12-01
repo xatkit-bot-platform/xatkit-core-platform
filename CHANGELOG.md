@@ -8,6 +8,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## Unreleased
 
+### Changed
+- Action parameters and return are now statically typed. **This change breaks the public API**: execution models relying on the generic `Object` type for parameter and return now need to cast values to the expected type. (e.g. `ChatPlatform.Reply(message)` now requires that `message` is a `String`, this can be fixed with the following syntax `ChatPlatform.Reply(message as String)`).  
+
 ### Deleted
 
 - Removed `Random` action, this action is not needed anymore with the Xbase integration, and can be replaced by `Math.random` in the execution model. **This change breaks the public API**: existing execution models relying on `CorePlatform.Random` should update to the new java-based syntax.
