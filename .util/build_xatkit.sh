@@ -9,8 +9,8 @@ main() {
 
 	e "Building Xatkit Parent"
     cd /tmp
-    git clone https://github.com/xatkit-bot-platform/xatkit-releases.git > /dev/null
-    cd xatkit-releases
+    git clone https://github.com/xatkit-bot-platform/xatkit.git > /dev/null
+    cd xatkit
     mvn install -DskipTests > /dev/null
     e "Done"
 
@@ -24,8 +24,8 @@ main() {
 	# Do not print the build log, it is already available in the Xatkit build
     e "Building Xatkit Runtime"
     cd /tmp
-    git clone https://github.com/xatkit-bot-platform/xatkit.git > /dev/null
-    cd xatkit
+    git clone https://github.com/xatkit-bot-platform/xatkit-runtime.git > /dev/null
+    cd xatkit-runtime
     mvn install -DskipTests > /dev/null
     e "Done"
 }
