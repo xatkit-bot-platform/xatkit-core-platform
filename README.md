@@ -9,7 +9,11 @@ Toolbox of generic actions that can be used in Xatkit execution models. This pla
 
 ## Providers
 
-The core platform does not define any provider.
+The Core platform defines the following provider:
+
+| Provider          | Type  | Context Parameters | Description                                                  |
+| ----------------- | ----- | ------------------ | ------------------------------------------------------------ |
+| CronEventProvider | Event | -                  | Periodically generates *CronTick* events to schedule bot actions. The start date/time as well as the period can be specified in the Xatkit properties file. |
 
 ## Actions
 
@@ -22,4 +26,9 @@ The core platform does not define any provider.
 
 ## Options
 
-The core platform does not support any configuration option.
+The Core platform supports the following configuration options
+
+| Key                         | Values | Description                                                  | Constraint                                                   |
+| --------------------------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `xatkit.core.cron.start_on` | String | The date/time used to start the `CronEventProvider`  event generation. **Note**: this date must follow the ISO_DATE_TIME format (it should be parsable by `DateTimeFormatter#ISO_DATE_TIME`. | **Optional** (default is equal to `Instant.now()`)           |
+| `xatkit.core.cron.period`   | Long   | The interval between two *CronTick* events (in **seconds**). | **Optional** (default `-1`, meaning that only one *CronTick* will be generated) |

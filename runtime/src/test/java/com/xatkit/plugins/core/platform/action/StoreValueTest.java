@@ -2,6 +2,7 @@ package com.xatkit.plugins.core.platform.action;
 
 import com.xatkit.AbstractActionTest;
 import com.xatkit.plugins.core.platform.CorePlatform;
+import org.apache.commons.configuration2.BaseConfiguration;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +11,7 @@ public class StoreValueTest extends AbstractActionTest<StoreValue, CorePlatform>
 
     @Override
     protected CorePlatform getPlatform() {
-        return new CorePlatform(XATKIT_CORE);
+        return new CorePlatform(XATKIT_CORE, new BaseConfiguration());
     }
 
     @Test(expected = NullPointerException.class)

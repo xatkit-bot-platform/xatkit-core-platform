@@ -2,6 +2,12 @@ Platform CorePlatform
 
 path "com.xatkit.plugins.core.platform.CorePlatform"
 
+providers {
+	event CronEventProvider {
+		event CronTick
+	}
+}
+
 actions {
 	GetTime : String
 	GetDate : String

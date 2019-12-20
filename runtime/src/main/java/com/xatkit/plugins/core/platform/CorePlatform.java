@@ -5,6 +5,7 @@ import com.xatkit.core.platform.RuntimePlatform;
 import com.xatkit.core.platform.action.RuntimeAction;
 import com.xatkit.plugins.core.platform.action.GetDate;
 import com.xatkit.plugins.core.platform.action.GetTime;
+import org.apache.commons.configuration2.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +32,12 @@ public class CorePlatform extends RuntimePlatform {
     /**
      * Constructs a new {@link CorePlatform} from the provided {@link XatkitCore}.
      *
-     * @param xatkitCore the {@link XatkitCore} instance associated to this runtimePlatform
+     * @param xatkitCore    the {@link XatkitCore} instance associated to this runtimePlatform
+     * @param configuration the {@link Configuration} used to setup this platform
      * @throws NullPointerException if the provided {@code xatkitCore} is {@code null}
      */
-    public CorePlatform(XatkitCore xatkitCore) {
-        super(xatkitCore);
+    public CorePlatform(XatkitCore xatkitCore, Configuration configuration) {
+        super(xatkitCore, configuration);
         this.store = new HashMap<>();
     }
 
