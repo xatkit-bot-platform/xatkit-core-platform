@@ -5,4 +5,7 @@ path "com.xatkit.plugins.core.platform.CorePlatform"
 actions {
 	GetTime : String
 	GetDate : String
+	StoreValue(k : String, v : Object) : Object
+	GetValue(k : String) : Object
+	GetValue(k : String, defaultValue : Object) : Object
 }

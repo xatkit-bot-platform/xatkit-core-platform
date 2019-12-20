@@ -8,6 +8,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## Unreleased
 
+### Added
+
+- Action `StoreValue` allowing to store a *key/value* pair in the **global bot scope**. Values stored with this action can be accessed from any bot installation, session, or context.
+- Action `GetValue` allowing to retrieve a *value* stored in the **global bot scope** with `StoreValue`. This action does not rely on the session to retrieve the value.
+
 ## [3.0.0] 2019-12-01
 
 ### Changed

@@ -1,10 +1,13 @@
 package com.xatkit.plugins.core.platform;
 
 import com.xatkit.core.XatkitCore;
+import com.xatkit.core.platform.RuntimePlatform;
+import com.xatkit.core.platform.action.RuntimeAction;
 import com.xatkit.plugins.core.platform.action.GetDate;
 import com.xatkit.plugins.core.platform.action.GetTime;
-import com.xatkit.core.platform.action.RuntimeAction;
-import com.xatkit.core.platform.RuntimePlatform;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link RuntimePlatform} concrete implementation providing core functionality that can be used in execution models.
@@ -23,6 +26,8 @@ import com.xatkit.core.platform.RuntimePlatform;
  */
 public class CorePlatform extends RuntimePlatform {
 
+    private Map<String, Object> store;
+
     /**
      * Constructs a new {@link CorePlatform} from the provided {@link XatkitCore}.
      *
@@ -31,5 +36,15 @@ public class CorePlatform extends RuntimePlatform {
      */
     public CorePlatform(XatkitCore xatkitCore) {
         super(xatkitCore);
+        this.store = new HashMap<>();
+    }
+
+    /**
+     * Returns the {@link Map} used to store key/value bindings in the global bot scope.
+     *
+     * @return the {@link Map} used to store key/value bindings in the global bot scope
+     */
+    public Map<String, Object> getStore() {
+        return this.store;
     }
 }
