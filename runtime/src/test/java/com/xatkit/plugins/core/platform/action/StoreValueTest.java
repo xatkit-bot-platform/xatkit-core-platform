@@ -5,6 +5,8 @@ import com.xatkit.plugins.core.platform.CorePlatform;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.junit.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreValueTest extends AbstractActionTest<StoreValue, CorePlatform> {
@@ -15,46 +17,70 @@ public class StoreValueTest extends AbstractActionTest<StoreValue, CorePlatform>
     }
 
     @Test(expected = NullPointerException.class)
+    public void constructNullCollection() {
+        action = new StoreValue(platform, emptySession, null, "key", "value");
+    }
+
+    @Test(expected = NullPointerException.class)
     public void constructNullKey() {
-        action = new StoreValue(platform, emptySession, null, "value");
+        action = new StoreValue(platform, emptySession, null, "key", "value");
     }
 
     @Test
-    public void constructValidKeyNullValue() {
-        action = new StoreValue(platform, emptySession, "key", null);
-        assertThatFieldsAreSet(action, "key", null);
+    public void constructValidCollectionAndKeyNullValue() {
+        action = new StoreValue(platform, emptySession, "collection", "key", null);
+        assertThatFieldsAreSet(action, "collection", "key", null);
     }
 
     @Test
-    public void constructValidKeyValidValue() {
-        action = new StoreValue(platform, emptySession, "key", "value");
-        assertThatFieldsAreSet(action, "key", "value");
+    public void constructValidCollectionAndKeyValidValue() {
+        action = new StoreValue(platform, emptySession, "collection", "key", "value");
+        assertThatFieldsAreSet(action, "collection", "key", "value");
     }
 
     @Test
-    public void computeValueNotInStore() {
-        action = new StoreValue(platform, emptySession, "key", "value");
+    public void computeCollectionDoesNotExist() {
+        action = new StoreValue(platform, emptySession, "collection", "key", "value");
         action.compute();
-        assertThat(platform.getStore().get("key")).as("Store contains the key/value pair").isEqualTo("value");
+        assertThat(platform.getCollection("collection")).as("The store contains the collection").isNotNull();
+        assertThat(platform.getCollection("collection").get("key")).as("The collection contains the key/value pair").isEqualTo("value");
     }
 
     @Test
-    public void computeValueInStore() {
-        platform.getStore().put("key", "oldValue");
-        action = new StoreValue(platform, emptySession, "key", "value");
+    public void computeValueNotInCollection() {
+        /*
+         * Create an empty collection.
+         */
+        platform.getOrCreateCollection("collection");
+        action = new StoreValue(platform, emptySession, "collection", "key", "value");
         action.compute();
-        assertThat(platform.getStore().get("key")).as("Store contains the new key/value pair").isEqualTo("value");
+        assertThat(platform.getCollection("collection")).as("The store contains the collection").isNotNull();
+        assertThat(platform.getCollection("collection").get("key")).as("Store contains the key/value pair").isEqualTo(
+                "value");
     }
 
     @Test
-    public void computeValidKeyNullValue() {
-        action = new StoreValue(platform, emptySession, "key", null);
+    public void computeValueInCollection() {
+        Map<String, Object> collection = platform.getOrCreateCollection("collection");
+        collection.put("key", "oldValue");
+        action = new StoreValue(platform, emptySession, "collection", "key", "value");
         action.compute();
-        assertThat(platform.getStore()).as("Store contains key").containsKey("key");
-        assertThat(platform.getStore().get("key")).as("Key value is null").isNull();
+        assertThat(platform.getCollection("collection")).as("The store contains the collection").isNotNull();
+        assertThat(platform.getCollection("collection").get("key")).as("Store contains the key/value pair").isEqualTo(
+                "value");
     }
 
-    private void assertThatFieldsAreSet(StoreValue action, String key, Object value) {
+    @Test
+    public void computeValidKeyAndCollectionNullValue() {
+        action = new StoreValue(platform, emptySession, "collection", "key", null);
+        action.compute();
+        assertThat(platform.getCollection("collection")).as("The store contains the collection").isNotNull();
+        assertThat(platform.getCollection("collection")).as("Collection contains key").containsKey("key");
+        assertThat(platform.getCollection("collection").get("key")).as("Key value is null").isNull();
+    }
+
+    private void assertThatFieldsAreSet(StoreValue action, String collection, String key, Object value) {
+        assertThat(action.getCollectionName()).as("Collection field correctly set").isEqualTo(collection);
         assertThat(action.getKey()).as("Key field correctly set").isEqualTo(key);
         assertThat(action.getValue()).as("Value field correctly set").isEqualTo(value);
     }

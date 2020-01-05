@@ -11,7 +11,7 @@ providers {
 actions {
 	GetTime : String
 	GetDate : String
-	StoreValue(k : String, v : Object) : Object
-	GetValue(k : String) : Object
-	GetValue(k : String, defaultValue : Object) : Object
+	StoreValue(collection: String, k : String, v : Object) : Object
+	GetValue(collection: String, k : String) : Object
+	GetValue(collection : String, k : String, defaultValue : Object) : Object
 }

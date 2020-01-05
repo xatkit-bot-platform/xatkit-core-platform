@@ -7,8 +7,12 @@ import com.xatkit.plugins.core.platform.action.GetDate;
 import com.xatkit.plugins.core.platform.action.GetTime;
 import org.apache.commons.configuration2.Configuration;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.util.Objects.isNull;
 
 /**
  * A {@link RuntimePlatform} concrete implementation providing core functionality that can be used in execution models.
@@ -27,7 +31,10 @@ import java.util.Map;
  */
 public class CorePlatform extends RuntimePlatform {
 
-    private Map<String, Object> store;
+    /**
+     * The internal store used to persist bot collections.
+     */
+    private Map<String, Map<String, Object>> store;
 
     /**
      * Constructs a new {@link CorePlatform} from the provided {@link XatkitCore}.
@@ -42,11 +49,41 @@ public class CorePlatform extends RuntimePlatform {
     }
 
     /**
-     * Returns the {@link Map} used to store key/value bindings in the global bot scope.
+     * Returns the internal store used to persist bot collections.
      *
-     * @return the {@link Map} used to store key/value bindings in the global bot scope
+     * @return the internal store used to persist bot collections.
      */
-    public Map<String, Object> getStore() {
+    protected Map<String, Map<String, Object>> getStore() {
         return this.store;
+    }
+
+    /**
+     * Returns the {@link Map} containing the {@code key/value} bindings associated to the given {@code collectionName}.
+     *
+     * @param collectionName the name of the collection to get the bindings from
+     * @return the {@link Map} containing the {@code key/value} bindings associated to the given {@code collectionName}
+     */
+    public @Nullable
+    Map<String, Object> getCollection(@Nonnull String collectionName) {
+        return this.store.get(collectionName);
+    }
+
+    /**
+     * Gets or creates the {@link Map} containing the {@code key/value} bindings associated to the given {@code
+     * collectionName}.
+     * <p>
+     * This method creates an empty {@link Map} if it does not exist.
+     *
+     * @param collectionName the name of the collection to get the bindings from
+     * @return the {@link Map} containing the {@code key/value} bindings associated to the given {@code collectionName}
+     */
+    public @Nonnull
+    Map<String, Object> getOrCreateCollection(@Nonnull String collectionName) {
+        Map<String, Object> result = this.getCollection(collectionName);
+        if (isNull(result)) {
+            result = new HashMap<>();
+            this.store.put(collectionName, result);
+        }
+        return result;
     }
 }
