@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CronEventProviderTest extends AbstractEventProviderTest<CronEventProvider, CorePlatform> {
@@ -45,7 +46,9 @@ public class CronEventProviderTest extends AbstractEventProviderTest<CronEventPr
     @After
     public void tearDown() {
         super.tearDown();
-        provider.close();
+        if(nonNull(provider)) {
+            provider.close();
+        }
     }
 
     @Override
