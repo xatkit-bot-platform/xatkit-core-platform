@@ -41,6 +41,8 @@ public class GetCollectionTest extends AbstractActionTest<GetCollection, CorePla
         action = new GetCollection(platform, emptySession, "collection");
         Object result = action.compute();
         assertThatCollectionIsValid(result);
+        Map<String, Object> mapResult = (Map<String, Object>) result;
+        assertThat(mapResult).as("Result Map is empty").isEmpty();
     }
 
     @Test
@@ -58,7 +60,6 @@ public class GetCollectionTest extends AbstractActionTest<GetCollection, CorePla
     private void assertThatCollectionIsValid(Object collection) {
         assertThat(collection).as("Result is a Map").isInstanceOf(Map.class);
         Map<String, Object> mapResult = (Map<String, Object>) collection;
-        assertThat(mapResult).as("Result Map is empty").isEmpty();
         assertThatExceptionOfType(UnsupportedOperationException.class).as("Map is unmodifiable").
                 isThrownBy(() -> mapResult.put("key", "value"));
     }
