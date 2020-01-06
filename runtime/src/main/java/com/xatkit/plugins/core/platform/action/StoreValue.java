@@ -39,7 +39,7 @@ public class StoreValue extends RuntimeAction<CorePlatform> {
      * @param collectionName  the name of the collection associated to the value to store
      * @param key             the key associated to the value to store
      * @param value           the value to store
-     * @throws NullPointerException if the provided {@code collection} or {@code key} is {@code null}
+     * @throws NullPointerException if the provided {@code collectionName} or {@code key} is {@code null}
      */
     public StoreValue(CorePlatform runtimePlatform, XatkitSession session,
                       @Nonnull String collectionName, @Nonnull String key, @Nullable Object value) {
