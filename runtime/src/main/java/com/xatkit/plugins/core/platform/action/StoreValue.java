@@ -12,23 +12,26 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
  * Puts the given {@code key=value} pair in the provided {@code collection}.
+ *
+ * @see StoreListValue
+ * @see StoreSetValue
  */
 public class StoreValue extends RuntimeAction<CorePlatform> {
 
     /**
      * The collection associated to the value to store.
      */
-    private String collectionName;
+    protected String collectionName;
 
     /**
      * The key associated to the value to store.
      */
-    private String key;
+    protected String key;
 
     /**
      * The value to store.
      */
-    private Object value;
+    protected Object value;
 
     /**
      * Constructs a {@link StoreValue} instance with the provided {@code runtimePlatform}, {@code session}, {@code

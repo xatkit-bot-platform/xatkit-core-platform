@@ -12,6 +12,8 @@ actions {
 	GetTime : String
 	GetDate : String
 	StoreValue(collection: String, k : String, v : Object) : Object
+	StoreListValue(collection : String, k : String, v : Object) : Object
+	StoreSetValue(collection : String, k : String, v : Object) : Object
 	GetValue(collection: String, k : String) : Object
 	GetValue(collection : String, k : String, defaultValue : Object) : Object
 	GetCollection(collection : String) : java.util.Map<String, Object>
