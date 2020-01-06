@@ -15,6 +15,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 - Action `StoreSetValue` allowing to store a *value* in the *Set* associated to the given *key*, in a *collection* at the **global bot scope**. Values stored with this action can be accessed from any bot installation, session, or context.
 - Action `GetValue` allowing to retrieve a *value* stored in a *collection* at the **global bot scope** with `StoreValue`. This action does not rely on the session to retrieve the value.
 - Action `GetCollection` allowing to retrieve an entire *collection* at the **global bot scope**. This action does not rely on the session to retrieve the value. The returned *collection* is an unmodifiable  `Map` containing all the *key/value* pairs of the requested collection.
+- Action `ClearCollection` allowing to clear all the entries from a given collection at the **global bot scope**. 
 - `CronEventProvider`, a provider that generates periodic `CronTick` events that can be used to schedule actions in a bot (fix [#1](https://github.com/xatkit-bot-platform/xatkit-core-platform/issues/1)). The start date/time as well as the period can be specified in the Xatkit properties file using the keys `xatkit.core.cron.start_on` and `xatkit.core.cron.period`, respectively.
 
 ## [3.0.0] 2019-12-01

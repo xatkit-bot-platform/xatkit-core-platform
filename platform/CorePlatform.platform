@@ -17,4 +17,5 @@ actions {
 	GetValue(collection: String, k : String) : Object
 	GetValue(collection : String, k : String, defaultValue : Object) : Object
 	GetCollection(collection : String) : java.util.Map<String, Object>
+	ClearCollection(collection : String)
 }
