@@ -12,25 +12,20 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class GetCollectionTest extends AbstractActionTest<GetCollection, CorePlatform> {
 
-    @Override
-    protected CorePlatform getPlatform() {
-        return new CorePlatform(XATKIT_CORE, new BaseConfiguration());
-    }
-
     @Test(expected = NullPointerException.class)
     public void constructNullCollectionName() {
-        action = new GetCollection(platform, emptySession, null);
+        action = new GetCollection(platform, session, null);
     }
 
     @Test
     public void constructValidCollectionName() {
-        action = new GetCollection(platform, emptySession, "collection");
+        action = new GetCollection(platform, session, "collection");
         assertThat(action.getCollectionName()).as("Valid collection name").isEqualTo("collection");
     }
 
     @Test
     public void computeCollectionDoesNotExist() {
-        action = new GetCollection(platform, emptySession, "collection");
+        action = new GetCollection(platform, session, "collection");
         Object result = action.compute();
         assertThat(result).as("Result is null").isNull();
     }
@@ -38,7 +33,7 @@ public class GetCollectionTest extends AbstractActionTest<GetCollection, CorePla
     @Test
     public void computeCollectionExistsAndIsEmpty() {
         platform.getOrCreateCollection("collection");
-        action = new GetCollection(platform, emptySession, "collection");
+        action = new GetCollection(platform, session, "collection");
         Object result = action.compute();
         assertThatCollectionIsValid(result);
         Map<String, Object> mapResult = (Map<String, Object>) result;
@@ -48,13 +43,18 @@ public class GetCollectionTest extends AbstractActionTest<GetCollection, CorePla
     @Test
     public void computeCollectionExistsNotEmpty() {
         platform.getOrCreateCollection("collection").put("key", "value");
-        action = new GetCollection(platform, emptySession, "collection");
+        action = new GetCollection(platform, session, "collection");
         Object result = action.compute();
         assertThatCollectionIsValid(result);
         Map<String, Object> mapResult = (Map<String, Object>) result;
         assertThat(mapResult).as("Result Map contains a single element").hasSize(1);
         assertThat(mapResult).as("Result Map contains the expected key").containsKey("key");
         assertThat(mapResult.get("key")).as("Result Map contains the expected value").isEqualTo("value");
+    }
+
+    @Override
+    protected CorePlatform getPlatform() {
+        return new CorePlatform(mockedXatkitCore, new BaseConfiguration());
     }
 
     private void assertThatCollectionIsValid(Object collection) {

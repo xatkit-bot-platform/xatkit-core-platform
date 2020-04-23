@@ -1,8 +1,12 @@
 package com.xatkit.plugins.core.platform.io;
 
 import com.xatkit.AbstractEventProviderTest;
+import com.xatkit.core.EventDefinitionRegistry;
+import com.xatkit.core.ExecutionService;
 import com.xatkit.core.XatkitException;
+import com.xatkit.core.session.XatkitSession;
 import com.xatkit.intent.EventDefinition;
+import com.xatkit.intent.EventInstance;
 import com.xatkit.intent.IntentFactory;
 import com.xatkit.plugins.core.CoreUtils;
 import com.xatkit.plugins.core.platform.CorePlatform;
@@ -10,8 +14,8 @@ import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -20,27 +24,31 @@ import java.time.temporal.ChronoUnit;
 
 import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CronEventProviderTest extends AbstractEventProviderTest<CronEventProvider, CorePlatform> {
 
     private Configuration configuration;
 
-    @BeforeClass
-    public static void setUpBeforeClass() {
-        AbstractEventProviderTest.setUpBeforeClass();
-        /*
-         * We need to register it manually because we are not loading an execution model
-         */
-        EventDefinition cronTickEventDefinition = IntentFactory.eINSTANCE.createEventDefinition();
-        cronTickEventDefinition.setName("CronTick");
-        XATKIT_CORE.getEventDefinitionRegistry().registerEventDefinition(cronTickEventDefinition);
-    }
+    private ExecutionService mockedExecutionService;
+
+    private EventDefinitionRegistry mockedEventRegistry;
 
     @Before
     public void setUp() {
         super.setUp();
-        XATKIT_CORE.clearHandledMessages();
         configuration = new BaseConfiguration();
+        mockedExecutionService = mock(ExecutionService.class);
+        when(mockedXatkitCore.getExecutionService()).thenReturn(mockedExecutionService);
+        mockedEventRegistry = mock(EventDefinitionRegistry.class);
+        when(mockedXatkitCore.getEventDefinitionRegistry()).thenReturn(mockedEventRegistry);
+        EventDefinition cronTickEventDefinition = IntentFactory.eINSTANCE.createEventDefinition();
+        cronTickEventDefinition.setName("CronTick");
+        when(mockedEventRegistry.getEventDefinition(cronTickEventDefinition.getName())).thenReturn(cronTickEventDefinition);
     }
 
     @After
@@ -49,11 +57,6 @@ public class CronEventProviderTest extends AbstractEventProviderTest<CronEventPr
         if(nonNull(provider)) {
             provider.close();
         }
-    }
-
-    @Override
-    protected CorePlatform getPlatform() {
-        return new CorePlatform(XATKIT_CORE, new BaseConfiguration());
     }
 
     @Test(expected = NullPointerException.class)
@@ -140,6 +143,11 @@ public class CronEventProviderTest extends AbstractEventProviderTest<CronEventPr
         assertThat(provider.scheduler.isShutdown()).as("Schedule is shutdown").isTrue();
     }
 
+    @Override
+    protected CorePlatform getPlatform() {
+        return new CorePlatform(mockedXatkitCore, new BaseConfiguration());
+    }
+
     private String getDateTimeStringNowPlusXSecond(int secondsToAdd) {
         return DateTimeFormatter.ISO_DATE_TIME
                 .withZone(ZoneId.of("UTC"))
@@ -153,8 +161,9 @@ public class CronEventProviderTest extends AbstractEventProviderTest<CronEventPr
     }
 
     private void assertThatXatkitCoreContainsCronTicks(int cronTickCount) {
-        assertThat(XATKIT_CORE.getHandledEvents()).as("XatkitCore received " + cronTickCount + " event(s)").hasSize(cronTickCount);
-        assertThat(XATKIT_CORE.getHandledEvents()).as("Events are CronTicks").allMatch(e -> e.getName().equals(
-                "CronTick"));
+        ArgumentCaptor<EventInstance> captor = ArgumentCaptor.forClass(EventInstance.class);
+        verify(mockedExecutionService, times(cronTickCount)).handleEventInstance(captor.capture(),
+                any(XatkitSession.class));
+        assertThat(captor.getAllValues()).allMatch(e -> e.getDefinition().getName().equals("CronTick"));
     }
 }

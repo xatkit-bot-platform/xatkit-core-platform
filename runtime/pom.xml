@@ -16,6 +16,7 @@
         <log4j.version>2.9.1</log4j.version>
         <junit.version>4.12</junit.version>
         <assertj.version>3.10.0</assertj.version>
+        <mockito-version>3.3.3</mockito-version>
     </properties>
 
 
@@ -56,6 +57,11 @@
             <type>test-jar</type>
         </dependency>
 
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -82,6 +88,13 @@
                 <artifactId>log4j-core</artifactId>
                 <type>test-jar</type>
                 <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito-version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>

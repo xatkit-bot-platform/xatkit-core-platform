@@ -1,42 +1,20 @@
 package com.xatkit.plugins.core.platform;
 
-import com.xatkit.AbstractXatkitTest;
-import com.xatkit.core.XatkitCore;
-import com.xatkit.stubs.StubXatkitCore;
-import org.apache.commons.configuration2.BaseConfiguration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.xatkit.AbstractPlatformTest;
 import org.junit.Test;
 
-import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CorePlatformTest extends AbstractXatkitTest {
-
-    private static XatkitCore XATKIT_CORE;
-
-    @BeforeClass
-    public static void setUpBeforeClass() {
-        XATKIT_CORE = new StubXatkitCore();
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() {
-        if (nonNull(XATKIT_CORE) && !XATKIT_CORE.isShutdown()) {
-            XATKIT_CORE.shutdown();
-        }
-    }
-
-    private CorePlatform corePlatform;
+public class CorePlatformTest extends AbstractPlatformTest<CorePlatform> {
 
     @Test(expected = NullPointerException.class)
     public void constructNullXatkitCore() {
-        corePlatform = new CorePlatform(null, new BaseConfiguration());
+        platform = new CorePlatform(null, configuration);
     }
 
     @Test
     public void constructValidXatkitCore() {
-        corePlatform = new CorePlatform(XATKIT_CORE, new BaseConfiguration());
-        assertThat(corePlatform.getStore()).as("Empty store").isEmpty();
+        platform = new CorePlatform(mockedXatkitCore, configuration);
+        assertThat(platform.getStore()).as("Empty store").isEmpty();
     }
 }
